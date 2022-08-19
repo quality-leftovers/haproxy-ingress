@@ -7,7 +7,7 @@ GIT_REPO=$(shell git config --get remote.origin.url)
 GIT_COMMIT=git-$(shell git rev-parse --short HEAD)
 VERSION_PKG=github.com/jcmoraisjr/haproxy-ingress/pkg/version
 CONTROLLER_FLAGS=-X $(VERSION_PKG).RELEASE=local -X $(VERSION_PKG).COMMIT=$(GIT_COMMIT) -X $(VERSION_PKG).REPO=$(GIT_REPO)
-CONTROLLER_TAG?=localhost/haproxy-ingress:latest
+CONTROLLER_TAG?=goergch/haproxy-ingress:latest
 LOCAL_FS_PREFIX?=/tmp/haproxy-ingress
 KUBECONFIG?=$(HOME)/.kube/config
 CONTROLLER_CONFIGMAP?=
@@ -50,9 +50,9 @@ linux-build:
 
 .PHONY: image
 image: linux-build
-	docker build -t $(CONTROLLER_TAG) rootfs
+	docker build --platform linux/amd64 -t $(CONTROLLER_TAG) rootfs
 
 .PHONY: docker-build
 docker-build:
 	@rm -f rootfs/haproxy-ingress-controller
-	docker build -t $(CONTROLLER_TAG) . -f builder/Dockerfile
+	docker build --platform linux/amd64 -t $(CONTROLLER_TAG) . -f builder/Dockerfile

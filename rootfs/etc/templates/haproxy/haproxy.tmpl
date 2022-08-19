@@ -1162,6 +1162,10 @@ frontend {{ $proxy__front_http }}
 {{- /*------------------------------------*/}}
     http-request set-var(req.path) path
     http-request set-var(req.host) hdr(host),field(1,:),lower
+{{- if $global.DefaultHost }}
+    acl host_is_ip hdr_reg(host) -i ^(?:(?:2(?:[0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9])\.){3}(?:(?:2([0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9]))
+    http-request set-var(req.host) str("{{ $global.DefaultHost }}") if host_is_ip
+{{- end }}
     http-request set-var(req.base) var(req.host),concat(\#,req.path)
 
 {{- /*------------------------------------*/}}
@@ -1279,6 +1283,10 @@ frontend {{ $frontend.Name }}
 {{- /*------------------------------------*/}}
     http-request set-var(req.path) path
     http-request set-var(req.host) hdr(host),field(1,:),lower
+{{- if $global.DefaultHost }}
+    acl host_is_ip hdr_reg(host) -i ^(?:(?:2(?:[0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9])\.){3}(?:(?:2([0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9]))
+    http-request set-var(req.host) str("{{ $global.DefaultHost }}") if host_is_ip
+{{- end }}
     http-request set-var(req.base) var(req.host),concat(\#,req.path)
 
 {{- /*------------------------------------*/}}

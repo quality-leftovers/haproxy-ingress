@@ -88,6 +88,7 @@ type Global struct {
 	CustomHTTPHAResponses   []HTTPResponse
 	CustomSections          []string
 	CustomTCP               []string
+	DefaultHost             string
 }
 
 // GlobalBindConfig ...
