@@ -4,8 +4,6 @@
 #
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
-DEFAULT_TOKEN_LABEL="p11prov"
-
 set -eu -o pipefail
 
 function printHelp() {
@@ -43,7 +41,7 @@ LOGIN=0
 NAME=""
 X509_SUBJECT_ALTERNATIVE_NAMES=()
 PKCS11_SO_PATH="/usr/lib/x86_64-linux-gnu/pkcs11/p11-kit-client.so"
-PKCS11_DEFAULT_TOKEN_LABEL="sfh"
+PKCS11_DEFAULT_TOKEN_LABEL="sfh-token"
 
 function die() {
   echo "$@" 1>&2; exit 1
@@ -58,7 +56,7 @@ function formatOptionError() {
 }
 
 function getDefaultTokenUri() {
-  p11tool --provider /usr/lib/x86_64-linux-gnu/pkcs11/p11-kit-client.so --list-token-urls | grep "token=$DEFAULT_TOKEN_LABEL" | head -1 || exit "Failed to get default token URI"
+  p11tool --provider "$PKCS11_SO_PATH" --list-token-urls | grep "token=$PKCS11_DEFAULT_TOKEN_LABEL" | head -1 || exit "Failed to get default token URI"
 }
 
 function checkUriOption() {
@@ -130,7 +128,7 @@ function pkcs11Cmd() {
         set -x
         tokens=$(p11tool --provider "$PKCS11_SO_PATH" --list-token-urls)
         set +x
-        URI=$(echo "$tokens" | grep "token=$PKCS11_DEFAULT_TOKEN_LABEL" | head -1)
+        URI="$(getDefaultTokenUri)"
       fi
       opt=()
       if [ $LOGIN -eq 1 ]; then

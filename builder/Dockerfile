@@ -54,9 +54,9 @@ RUN set -eux; \
     mkdir /var/lib/haproxy; \
     chown haproxy:haproxy /var/lib/haproxy
 
-ENV HAPROXY_VERSION 2.7.6
-ENV HAPROXY_URL https://www.haproxy.org/download/2.7/src/haproxy-2.7.6.tar.gz
-ENV HAPROXY_SHA256 133f357ddb3fcfc5ad8149ef3d74cbb5db6bb4a5ab67289ce0b0ab686cdeb74f
+ENV HAPROXY_VERSION 2.7.10
+ENV HAPROXY_URL https://www.haproxy.org/download/2.7/src/haproxy-2.7.10.tar.gz
+ENV HAPROXY_SHA256 be175dcc1f6ad7ea174262493839bf2e632a3dd7df137dcca4ab882ae00c7490
 
 # see https://sources.debian.net/src/haproxy/jessie/debian/rules/ for some helpful navigation of the possible "make" arguments
 RUN set -eux; \
@@ -147,7 +147,7 @@ CMD ["haproxy", "-f", "/usr/local/etc/haproxy/haproxy.cfg"]
 FROM base as builder-pkcs11-provider
 
 ARG PKCS11_PROVIDER_REPO_URL="https://github.com/quality-leftovers/pkcs11-provider.git"
-ARG PKCS11_PROVIDER_BRANCH="pem"
+ARG PKCS11_PROVIDER_BRANCH="p11pem/inc2"
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         gnutls-bin gnupg2 p11-kit ca-certificates \
