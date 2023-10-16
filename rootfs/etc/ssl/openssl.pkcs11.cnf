@@ -78,6 +78,7 @@ activate = 1
 module = /usr/local/lib/ossl-modules/pkcs11.so
 pkcs11-module-path = /usr/lib/x86_64-linux-gnu/pkcs11/p11-kit-client.so
 pkcs11-module-token-pin = file:/etc/ssl/pkcs11-module-token-pin-value.txt
+pkcs11-module-quirks = no-allowed-mechanisms
 activate = 1
 
 ####################################################################
